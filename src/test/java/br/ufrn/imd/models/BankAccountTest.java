@@ -38,5 +38,31 @@ public class BankAccountTest {
     public void testDepositShouldNotBeZeroOrNegativeValue(double value){
         assertThrows(IllegalArgumentException.class, () -> bankAccount.deposit(value));
     }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -10, -5, -3, -15})
+    public void testWihtdrawShouldNotBeZeroOrNegativeValue(double value){
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.withdraw(value));
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {0, -10, -5, -3, -15})
+    public void testTransferShouldNotBeZeroOrNegativeValue(double value){
+        BankAccount beneficiaryAccount = new BankAccount(12344, 5, 300);
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.transfer(beneficiaryAccount, value));
+    }
+
+    @Test
+    public void testWihtdrawShouldNotBeMoreThenBalance(){
+        double value = bankAccount.getBalance() + 1;
+        assertThrows(IllegalArgumentException.class , () -> bankAccount.withdraw(value));
+    }
+
+    @Test
+    public void testTransferShouldNotBeMoreThenBalance(){
+        double value = bankAccount.getBalance() + 1;
+        BankAccount destBankAccount = new BankAccount(12344, 5, 300);
+        assertThrows(IllegalArgumentException.class, () -> bankAccount.transfer(destBankAccount, value));
+    }
 }
 
